@@ -218,7 +218,7 @@ RECAPTCHA-MAILHIDE-PUBLIC-KEY and RECAPTCHA-MAILHIDE-PRIVATE-KEY
 are used by default."
   (let ((private-key (or private-key recaptcha-mailhide-private-key))
 	(public-key (or public-key recaptcha-mailhide-public-key)))
-  (format "%sk=%s&c=%s" recaptcha-mailhide-decoder-url public-key (recaptcha-mailhide-encrypt email private-key))))
+  (format "%s?k=%s&c=%s" recaptcha-mailhide-decoder-url public-key (recaptcha-mailhide-encrypt email private-key))))
 
 ;;;###autoload
 (defun recaptcha-mailhide-html (email &optional name label private-key public-key)
