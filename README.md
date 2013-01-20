@@ -1,6 +1,8 @@
 recaptcha
 =========
 
+[logo]: https://raw.github.com/fsmunoz/recaptcha/master/recaptcha-el.png "Logo"
+
 Emacs Lisp interface to reCAPTCHA.
 
 This file contains an elisp interface to Google's reCAPTCHA
