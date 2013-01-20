@@ -175,7 +175,6 @@ Returns t if valid, nil otherwise."
 	 (url-request-extra-headers `(("Content-Type" . "application/x-www-form-urlencoded")))
 	 (url-request-data (format "privatekey=%s&remoteip=%s&challenge=%s&response=%s" private-key remoteip challenge response)))
     (with-current-buffer (url-retrieve-synchronously verify-url)
-	   (setq fsm (buffer-string))
 	   (goto-char (point-min))
 	   (search-forward-regexp "^\n\\([a-z]+\\)*\n\\(.*\\)" nil t)
 	   (let ((result (match-string 1 nil))
