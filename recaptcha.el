@@ -72,6 +72,7 @@
 ;;
 ;;; Code:
 
+(require 'cl)  
 (require 'url) ;; used to issue the POST request to the webservice
 (require 'aes) ;; for the reCAPTCHA mailhide functionality
 
