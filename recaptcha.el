@@ -161,7 +161,7 @@ objects that are evaluated before replacement."
   (apply 'format html-template (mapcar 'eval html-values))))
 
 ;;;###autoload
-(defun recaptcha-verify (remoteip challenge response &optional verify-url private-key)
+(defun recaptcha-verify (remoteip challenge response &optional extended-reply verification-url private-key)
   "Validates reCAPTCHA by submitting to VERIFICATION-URL
 the mandatory data: PRIVATE-KEY (reCAPTCHA private key),
 REMOTEIP (the client IP address), CHALLENGE (normally the value
@@ -169,22 +169,35 @@ of recaptcha_challenge_field sent via a form) and
 RESPONSE (normally the value of recaptcha_response_field sent via
 a form).
 
-The RECAP-VERIFICATION-URL and PRIVATE-KEY values are optional,
-and the global values with the same name are used if they are not
-provided.
+With EXTENDED-REPLY non-nil modify the return value of the
+function: instead of returning t for a successful verification
+and nil otherwise (suitable for use inside logic tests) it
+returns a cons composed of the result and the additional
+information, e.g. '(\"true\" . \"success\") or '(\"false\"
+.\"invalid-site-private-key\").
 
-Returns t if valid, nil otherwise."
-  (let* ((verify-url  (or verify-url recaptcha-verification-url))
+VERIFICATION-URL and PRIVATE-KEY values are optional, and the
+global customisable values RECAPATCHA-VERIFICATION-URL and
+RECAPTCHA-PRIVATE-KEY are used if they are not provided.
+
+Returns t if valid, nil otherwise, or a cons with the details of
+the answer when EXTENDED-REPLY is non-nil."
+  (let* ((verification-url  (or verification-url recaptcha-verification-url))
 	 (private-key (or private-key recaptcha-private-key))
 	 (url-request-method "POST")
 	 (url-request-extra-headers `(("Content-Type" . "application/x-www-form-urlencoded")))
 	 (url-request-data (format "privatekey=%s&remoteip=%s&challenge=%s&response=%s" private-key remoteip challenge response)))
-    (with-current-buffer (url-retrieve-synchronously verify-url)
+    (with-current-buffer (url-retrieve-synchronously verification-url)
 	   (goto-char (point-min))
 	   (search-forward-regexp "^\n\\([a-z]+\\)*\n\\(.*\\)" nil t)
 	   (let ((result (match-string 1 nil))
-		 (additional-information (match-string 1 nil)))
-	     (if (equal result "true") t nil)))))
+		 (additional-information (match-string 2 nil)))
+	     (if extended-reply
+		 (cons result additional-information)
+	       (if (equal result "true") 
+		 t
+	       nil))))))
+
 
 ;; reCAPTCHA mailhide functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
