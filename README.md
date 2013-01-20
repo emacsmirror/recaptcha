@@ -1,7 +1,8 @@
 recaptcha
 =========
 
-[logo]: https://raw.github.com/fsmunoz/recaptcha/master/recaptcha-el.png "Logo"
+![alt text][logo]
+![logo]: https://raw.github.com/fsmunoz/recaptcha/master/recaptcha-el.png "Logo"
 
 Emacs Lisp interface to reCAPTCHA.
 
