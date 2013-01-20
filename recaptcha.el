@@ -195,23 +195,6 @@ Returns t if valid, nil otherwise."
 				       (?/ "_")))
 			    (base64-encode-string string no-line-break)))
 
-(defun recaptcha-mailhide-encrypt (email &optional private-key)
-  "Encrypt the EMAIL address using PRIVATE-KEY (or,if absent,
-RECAPTCHA-MAILHIDE-PRIVATE-KEY); return the encrypted data in
-base64 encoding"
-  (let ((private-key (or private-key recaptcha-mailhide-private-key)))
-    (flet ((aes-enlarge-to-multiple (v bs)
-  "Enlarge unibyte string V to a multiple of number BS and pad it.
-Padding is done according to RFC 5652 section 6.3.
-Return a new unibyte string containing the result.  V is not changed"
-  (let* ((padpre (mod (- (string-bytes v)) bs))
-         (pad (if (= padpre 0) 16 padpre)))
-    (concat v (make-string pad pad)))))
-      (recaptcha--base64-safe-encode-string
-       (aes-cbc-encrypt email	
-			(make-string 16 0)
-			(aes-KeyExpansion (aes-str-to-b (recaptcha--string-to-hex private-key)) 4) 4) t))))
-
 ;;;###autoload
 (defun recaptcha-mailhide-encrypt (email &optional private-key)
   "Encrypt the EMAIL address using PRIVATE-KEY (or,if absent,
