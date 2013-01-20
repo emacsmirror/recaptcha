@@ -5,6 +5,8 @@
 ;; Author: Frederico Munoz <fsmunoz@gmail.com>
 ;; Created: Jan 2013
 ;; Keywords: lisp, http, captcha
+;; Version: 0.3
+;; Package-Requires: ((aes "0.5-BETA-1"))
 ;;
 ;; This file is NOT part of GNU Emacs.
 ;;
@@ -67,6 +69,8 @@
 ;;   "Demonstration function"
 ;;   (elnode-http-start httpcon 200 '("Content-type" . "text/html"))
 ;;   (elnode-http-return httpcon (recaptcha-mailhide-html "bart@example.com" "Bartolomeu Dias")))
+;;
+;;; Code:
 
 (require 'url) ;; used to issue the POST request to the webservice
 (require 'aes) ;; for the reCAPTCHA mailhide functionality
@@ -229,3 +233,5 @@ are used by default."
 
 
 (provide 'recaptcha)
+
+;;; recaptcha.el ends here
